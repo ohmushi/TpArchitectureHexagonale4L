@@ -2,7 +2,7 @@ package cat.omnes.tp.account.domain;
 
 import java.util.Objects;
 
-final class AccountId {
+public final class AccountId {
     private final String value;
 
     private AccountId(String value) {

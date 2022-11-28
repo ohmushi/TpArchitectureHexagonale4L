@@ -6,29 +6,42 @@ import java.util.Objects;
 public final class Account {
 
     private final AccountId id;
-    private BigDecimal balance;
+    private Money balance;
 
-    private Account(AccountId id, BigDecimal balance) {
+    private Account(AccountId id, Money balance) {
         this.id = id;
         this.balance = balance;
     }
 
-    public static Account create(String id, BigDecimal balance) {
+    public static Account create(AccountId id, Money balance) {
         return new Account(
-                AccountId.of(id),
+                id,
                 balance
         );
     }
 
-    public void deposit(BigDecimal amount) {
+    public void deposit(Money amount) {
+        validateTransfer(amount);
         this.balance.add(amount);
     }
 
-    public void withdraw(BigDecimal amount) {
-        this.balance.subtract(amount);
+    private void validateTransfer(Money amount) {
+        if(!amount.isPositive()) {
+            throw new AccountException("Money transferred cannot be negative");
+        }
+    }
+
+    public void withdraw(Money amount) {
+        validateTransfer(amount);
+        this.balance.minus(amount);
+    }
+
+    public AccountId id() {
+        return this.id;
     }
 
 
+    //region Equals & hash
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,4 +54,5 @@ public final class Account {
     public int hashCode() {
         return Objects.hash(id);
     }
+    //endregion
 }
