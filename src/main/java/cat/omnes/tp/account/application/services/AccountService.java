@@ -1,11 +1,17 @@
 package cat.omnes.tp.account.application.services;
 
+import cat.omnes.tp.account.application.port.in.RegisterAccountUseCase;
+import cat.omnes.tp.account.application.port.in.SendMoneyCommand;
+import cat.omnes.tp.account.application.port.in.SendMoneyUseCase;
 import cat.omnes.tp.account.application.port.out.AccountRepository;
 import cat.omnes.tp.account.domain.*;
 
 import java.util.Objects;
 
-public final class AccountService {
+public final class AccountService implements
+        SendMoneyUseCase,
+        RegisterAccountUseCase
+{
 
     private final AccountRepository accounts;
     private final AccountConfiguration accountConfiguration;
@@ -18,28 +24,21 @@ public final class AccountService {
         this.accountConfiguration = accountConfiguration;
     }
 
-    public void sendMoney(AccountId idSender, AccountId idReceiver, Money amount) throws AccountException {
-        checkInputSendMoney(idSender, idReceiver, amount);
+    @Override
+    public void sendMoney(SendMoneyCommand command) throws AccountException {
+        Objects.requireNonNull(command);
 
-        final var sender = this.accounts.findById(idSender);
-        final var receiver = this.accounts.findById(idReceiver);
+        final var sender = this.accounts.findById(command.idSender);
+        final var receiver = this.accounts.findById(command.idReceiver);
 
-        sender.withdraw(amount);
-        receiver.deposit(amount);
+        sender.withdraw(command.amount);
+        receiver.deposit(command.amount);
 
         this.accounts.save(sender);
         this.accounts.save(receiver);
     }
 
-    private void checkInputSendMoney(AccountId idSender, AccountId idReceiver, Money amount) {
-        Objects.requireNonNull(idSender);
-        Objects.requireNonNull(idReceiver);
-
-        if(!amount.isPositive()) {
-            throw AccountApplication.wrongTransferMoney(amount);
-        }
-    }
-
+    @Override
     public AccountId registerAccount(Money initialMoney) {
         final var accountId = accounts.nextId();
         final var account = Account.create(accountId, initialMoney);
