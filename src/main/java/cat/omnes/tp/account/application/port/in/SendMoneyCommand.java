@@ -3,11 +3,12 @@ package cat.omnes.tp.account.application.port.in;
 import cat.omnes.tp.account.application.services.AccountApplication;
 import cat.omnes.tp.account.domain.AccountId;
 import cat.omnes.tp.account.domain.Money;
+import cat.omnes.tp.account.kernel.Command;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public final class SendMoneyCommand {
+public final class SendMoneyCommand implements Command {
 
     public final AccountId idSender;
     public final AccountId idReceiver;
