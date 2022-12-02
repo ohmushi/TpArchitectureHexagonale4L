@@ -18,7 +18,7 @@ public final class InMemoryAccountPersistenceAdapter implements AccountPersisten
     ));
 
     @Override
-    public Account findById(AccountId id) {
+    public Account load(AccountId id) {
         return this.registry.get(id.value());
     }
 

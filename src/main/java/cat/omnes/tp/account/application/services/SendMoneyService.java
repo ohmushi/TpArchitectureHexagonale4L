@@ -18,8 +18,8 @@ public final class SendMoneyService implements SendMoneyUseCase {
     public void sendMoney(SendMoneyCommand command) {
         Objects.requireNonNull(command);
 
-        final var sender = this.accounts.findById(command.idSender);
-        final var receiver = this.accounts.findById(command.idReceiver);
+        final var sender = this.accounts.load(command.idSender);
+        final var receiver = this.accounts.load(command.idReceiver);
 
         sender.withdraw(command.amount);
         receiver.deposit(command.amount);

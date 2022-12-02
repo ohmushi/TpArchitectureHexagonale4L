@@ -2,6 +2,7 @@ package cat.omnes.tp;
 
 import cat.omnes.tp.account.adapter.in.web.AccountController;
 import cat.omnes.tp.account.adapter.out.persistence.InMemoryAccountPersistenceAdapter;
+import cat.omnes.tp.account.application.services.GetAccountBalanceService;
 import cat.omnes.tp.account.application.services.RegisterAccountService;
 import cat.omnes.tp.account.application.services.SendMoneyService;
 
@@ -14,16 +15,21 @@ public class App {
 
         final var sendMoneyService = new SendMoneyService(accountPersistence);
         final var registerAccountService = new RegisterAccountService(accountPersistence);
+        final var getAccountBalanceService = new GetAccountBalanceService(accountPersistence);
 
 
-        final var controller = new AccountController(sendMoneyService, registerAccountService);
+        final var controller = new AccountController(
+                sendMoneyService,
+                registerAccountService,
+                getAccountBalanceService
+        );
 
         final var idSender = controller.registerAccount(BigDecimal.valueOf(100));
         final var idReceiver = controller.registerAccount(BigDecimal.valueOf(100));
 
         controller.sendMonney(idSender, idReceiver, BigDecimal.valueOf(50));
 
-
+        controller.
 
     }
 }

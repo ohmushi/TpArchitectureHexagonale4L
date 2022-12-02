@@ -5,5 +5,5 @@ import cat.omnes.tp.account.domain.AccountId;
 
 @FunctionalInterface
 public interface LoadAccountPort {
-    Account findById(AccountId id);
+    Account load(AccountId id);
 }

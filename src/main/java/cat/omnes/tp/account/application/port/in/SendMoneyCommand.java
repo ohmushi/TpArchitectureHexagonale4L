@@ -1,11 +1,10 @@
 package cat.omnes.tp.account.application.port.in;
 
-import cat.omnes.tp.account.application.services.AccountApplication;
+import cat.omnes.tp.account.application.services.AccountApplicationException;
 import cat.omnes.tp.account.domain.AccountId;
 import cat.omnes.tp.account.domain.Money;
 import cat.omnes.tp.account.kernel.Command;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public final class SendMoneyCommand implements Command {
@@ -19,7 +18,7 @@ public final class SendMoneyCommand implements Command {
         this.idReceiver = Objects.requireNonNull(idReceiver);
         this.amount = Objects.requireNonNull(amount);
         if(!amount.isPositive()) {
-            throw AccountApplication.wrongTransferMoney(amount);
+            throw AccountApplicationException.wrongTransferMoney(amount);
         }
     }
 }
