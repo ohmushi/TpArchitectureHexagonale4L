@@ -2,16 +2,15 @@ package cat.omnes.tp.account.application.services;
 
 import cat.omnes.tp.account.application.port.in.SendMoneyCommand;
 import cat.omnes.tp.account.application.port.in.SendMoneyUseCase;
-import cat.omnes.tp.account.application.port.out.AccountRepository;
-import cat.omnes.tp.account.domain.AccountException;
+import cat.omnes.tp.account.application.port.out.AccountPersistencePort;
 
 import java.util.Objects;
 
 public final class SendMoneyService implements SendMoneyUseCase {
 
-    private final AccountRepository accounts;
+    private final AccountPersistencePort accounts;
 
-    public SendMoneyService(AccountRepository accounts) {
+    public SendMoneyService(AccountPersistencePort accounts) {
         this.accounts = accounts;
     }
 
@@ -25,7 +24,7 @@ public final class SendMoneyService implements SendMoneyUseCase {
         sender.withdraw(command.amount);
         receiver.deposit(command.amount);
 
-        this.accounts.save(sender);
-        this.accounts.save(receiver);
+        this.accounts.update(sender);
+        this.accounts.update(receiver);
     }
 }
