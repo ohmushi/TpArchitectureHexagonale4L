@@ -1,4 +1,4 @@
 package cat.omnes.tp.account.domain;
 
-final class AccountConfiguration {
+public record AccountConfiguration(long transfertThreshold) {
 }
